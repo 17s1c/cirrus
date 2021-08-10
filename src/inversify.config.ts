@@ -10,7 +10,7 @@ import { Router } from './interfaces/Router';
 import { RouterImpl } from './impl/Router';
 import { Controller } from './interfaces/Controller';
 
-import { Home } from './user-modules/controllers/home';
+import { Home } from './user-modules/src/controllers/home';
 
 const container = new Container();
 
@@ -30,6 +30,8 @@ container.bind(Router).to(RouterImpl).inSingletonScope();
 //   };
 // });
 // container.bind(Session).to(SessionImpl);
+
+// container.bind(API).to(Home).whenTargetNamed('Home');
 
 // 遍历 controller，并将其绑定到容器
 container.bind(Controller).to(Home).whenTargetNamed('Home');
