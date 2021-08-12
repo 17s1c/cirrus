@@ -1,6 +1,6 @@
-import http from 'http';
-import { id, local, asyncLocalStorage } from '../s';
 import { Container } from 'inversify';
+import express from 'express';
+import { id, local, asyncLocalStorage } from '../s';
 import { Context } from '../interfaces/Context';
 import { Configuration } from '../interfaces/Configuration';
 import { Router } from '../interfaces/Router';
@@ -14,7 +14,8 @@ const router = container.get<Router>(Router);
 // const middlewares = container.getAll(Middleware);
 // const composed = compose(middlewares);
 
-const server = http.createServer((req, res) => {
+const app = express();
+app.use((req, res, next) => {
   // 构造上下文 Context
   const context: Context = {
     req,
@@ -40,15 +41,13 @@ const server = http.createServer((req, res) => {
       if (result instanceof Promise) {
         result
           .then(data => {
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify(data));
+            res.json(data);
           })
           .catch(err => {
             throw err;
           });
       } else {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(result));
+        res.json(result);
       }
     } catch (err) {
       res.end('HTTP/1.1 500 Internal Error');
@@ -58,19 +57,9 @@ const server = http.createServer((req, res) => {
       logWithId('exit' + JSON.stringify(local));
     }
   });
-
-  // try {
-  //   composed(router.dispatch(context));
-  // } catch (err) {
-  //   // do something
-  // }
 });
 
-server.on('clientError', (err: Error, socket) => {
-  socket.end('HTTP/1.1 400 Bad Request');
-  console.error(err);
-});
-
-server.listen(config.get('port'), () => {
-  console.log(`Server running at http://localhost:${config.get('port')}/`);
+const port = config.get('port');
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`);
 });
