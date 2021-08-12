@@ -1,15 +1,17 @@
-import { S } from 's';
+import { S } from '../../../s';
 
-export function index() {
+export const config = {};
+
+export function index(id: string) {
   const req = S.request;
 
   const { url } = req;
   // return S.render('index.html', { url });
   return {
+    id,
     url,
   };
 }
-// index.url = '/comments/:id';
 
 // export function list() {
 //   return {

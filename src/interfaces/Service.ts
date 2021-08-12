@@ -1,5 +1,5 @@
 export interface Service {
-    beforeStart(): Promise<any>;
+  beforeStart?(): Promise<any>;
 }
 
-export const Service = Symbol.for('Service')
+export const Service = Symbol.for('Service');

@@ -7,7 +7,7 @@ import { Configuration } from './interfaces/Configuration';
 // import { SessionImpl } from './impl/Session';
 // import { ContextFactory, Context } from './interfaces/Context';
 import { Router } from './interfaces/Router';
-import { RouterImpl } from './impl/Router';
+import { RouterImpl } from './impl/RouterOfJsonRpc';
 import { Controller } from './interfaces/Controller';
 
 import { Home } from './user-modules/src/controllers/home';

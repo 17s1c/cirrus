@@ -1,7 +1,8 @@
 import { Container } from 'inversify';
 import { Context } from './Context';
+import { Service } from './Service';
 
-export interface Router {
+export interface Router extends Service {
   // 根据请求 Context，找到对应的处理逻辑。
   // 将解析出来的参数传递给处理逻辑，通过闭包的形式返回。
   dispatch(ctx: Context, c: Container): () => any;

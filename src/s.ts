@@ -2,7 +2,7 @@ import { AsyncLocalStorage } from 'async_hooks';
 import { IncomingMessage, ServerResponse } from 'http';
 
 export const asyncLocalStorage = new AsyncLocalStorage<number>();
-export const local: Record<number, any> = {};
+export const local = new Map<number, any>();
 
 let idSeq = 0;
 export function id() {
@@ -21,7 +21,11 @@ export const S = new Proxy({} as IS, {
     if (name === 'id') {
       return id as any;
     }
-    return local[id][name];
+    if (!local.has(id)) {
+      throw new TypeError(`No local data for id ${id}`);
+    }
+
+    return local.get(id)[name];
   },
 });
 // (global as any).S = S as typeof S;

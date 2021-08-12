@@ -1,8 +1,9 @@
 import { IncomingMessage, ServerResponse } from 'http';
+import { RPCRequest } from 'impl/RouterOfJsonRpc';
 import { Session } from './Session';
 
 export interface Context {
-  req: IncomingMessage;
+  req: { body: RPCRequest } & IncomingMessage;
   res: ServerResponse;
   session?: Session;
   [key: string]: any;
