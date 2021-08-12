@@ -52,7 +52,7 @@ export class Home implements Controller {
       id: S.id,
       url,
       method: req.method,
-      url2: req.url,
+      url2_from_s: req.url,
     };
   }
 }
