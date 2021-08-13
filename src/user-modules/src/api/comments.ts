@@ -6,10 +6,10 @@ export function index(addr: string) {
   const req = S.request;
 
   const { url } = req;
-  // return S.render('index.html', { url });
   return {
     id: S.id,
     addr,
+    server_time: new Date(),
     url,
   };
 }

@@ -1,6 +1,6 @@
-import { Container, injectable } from 'inversify';
+import { injectable } from 'inversify';
+import { Request, Response } from 'express';
 import { jsonRpcError, jsonRpcResponse } from '../utils';
-import { Context } from '../interfaces/Context';
 import { Router } from '../interfaces/Router';
 
 // 后续这部分代码需要自动生成
@@ -22,38 +22,32 @@ export class RouterImpl implements Router {
     this.routes.set('comments', comments);
   }
 
-  dispatch(ctx: Context, container: Container) {
+  async dispatch(req: Request, res: Response) {
     // 根据 req 计算分发路径
-    const { id, method, params } = ctx.req.body;
+    const { id, method, params } = req.body;
     const [clsName, methodName] = method.split('.');
 
-    return () => {
-      try {
-        const inst = this.routes.get(clsName) || {};
-        const fn = inst[methodName];
+    try {
+      const inst = this.routes.get(clsName) || {};
+      const fn = inst[methodName];
 
-        if (typeof fn !== 'function') {
-          return jsonRpcError(id, 404, 'method not implement');
-        }
-
-        const result = fn.apply(inst, params);
-
-        if (result instanceof Promise) {
-          result
-            .then(data => {
-              jsonRpcResponse(id, data);
-            })
-            .catch(err => {
-              throw err;
-            });
-        } else {
-          return jsonRpcResponse(id, result);
-        }
-      } catch (e) {
-        // TODO: logger
-        console.error('RouterOfJsonRpc Error:', e);
-        return jsonRpcError(id, 500, e.message);
+      if (typeof fn !== 'function') {
+        res.json(jsonRpcError(id, 404, 'method not implement'));
       }
-    };
+
+      const result = fn.apply(inst, params);
+
+      if (result instanceof Promise) {
+        res.json(jsonRpcResponse(id, await result));
+      } else {
+        res.json(jsonRpcResponse(id, result));
+      }
+    } catch (e) {
+      // TODO: logger
+      console.error('RouterOfJsonRpc Error:', e);
+      res.json(jsonRpcError(id, 500, e.message));
+    } finally {
+      return true;
+    }
   }
 }

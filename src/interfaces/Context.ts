@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import { RPCRequest } from 'impl/RouterOfJsonRpc';
+import { RPCRequest } from '../impl/RouterOfJsonRpc';
 import { Session } from './Session';
 
 export interface Context {

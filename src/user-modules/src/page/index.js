@@ -3,7 +3,7 @@ module.exports = {
     return {
       title: 'Home',
       user: {
-        name: 'xxxyyyzzz',
+        name: 'nnnn',
       },
     };
   },

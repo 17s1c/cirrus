@@ -8,6 +8,7 @@ export class ConfigurationImpl implements Configuration {
     [key: string]: any;
   } = {
     port: 5000,
+    APIURL: '/api',
     pageDir: path.join(__dirname, '..', 'user-modules', 'src', 'page'),
   };
 
