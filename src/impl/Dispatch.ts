@@ -31,9 +31,11 @@ export class DispatchImpl implements Dispatch {
     if (url?.startsWith(this.APIURL)) {
       try {
         await this.router.dispatch(req, res);
-      } catch {
+      } catch (err) {
         // router 需要正确处理错误
         res.status(500).end('Internal server error by dispatch');
+        // TODO: logger
+        console.error('dispatch error', err);
       } finally {
         return true;
       }

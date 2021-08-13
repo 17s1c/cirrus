@@ -1,7 +1,7 @@
 import { Context } from './Context';
 
 export interface Controller {
-  ctx: Context;
+  // ctx: Context;
   [key: string]: any;
 }
 

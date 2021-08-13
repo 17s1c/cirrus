@@ -2,6 +2,8 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { RPCRequest } from '../impl/RouterOfJsonRpc';
 import { Session } from './Session';
 
+// TODO: 上下文
+// url, path, query, body, session...
 export interface Context {
   req: { body: RPCRequest } & IncomingMessage;
   res: ServerResponse;

@@ -1,15 +1,10 @@
 import { inject, injectable } from 'inversify';
 import { S } from '../../../s';
-import { Context } from '../../../interfaces/Context';
 import { Controller } from '../../../interfaces/Controller';
 import { logWithId } from '../../../utils';
 
 @injectable()
 export class Home implements Controller {
-  // TODO: 上下文
-  // url, path, query, body, session...
-  constructor(@inject(Context) public ctx: Context) {}
-
   // TODO: 用户如何使用数据库？
   // 可以是 Model，可以是查询连接，可以是？
   // 数据库事务怎么做？
