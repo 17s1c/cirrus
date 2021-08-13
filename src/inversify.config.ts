@@ -12,6 +12,8 @@ import { Render } from './interfaces/Render';
 import { RenderImpl } from './impl/Render';
 import { Dispatch } from './interfaces/Dispatch';
 import { DispatchImpl } from './impl/Dispatch';
+import { Application } from './interfaces/Application';
+import { ApplicationImpl } from './impl/Application';
 
 const container = new Container();
 
@@ -19,6 +21,7 @@ container.bind(Configuration).to(ConfigurationImpl).inSingletonScope();
 container.bind(Router).to(RouterImpl).inSingletonScope();
 container.bind(Render).to(RenderImpl).inSingletonScope();
 container.bind(Dispatch).to(DispatchImpl).inSingletonScope();
+container.bind(Application).to(ApplicationImpl).inSingletonScope();
 
 // container.bind(ContextFactory).toFactory((ctx: interfaces.Context) => {
 //   return (req, res): Context => {
@@ -33,7 +36,5 @@ container.bind(Dispatch).to(DispatchImpl).inSingletonScope();
 //   };
 // });
 // container.bind(Session).to(SessionImpl);
-
-// container.bind(API).to(Home).whenTargetNamed('Home');
 
 export { container };

@@ -35,6 +35,10 @@ export class RouterImpl implements Router {
         res.json(jsonRpcError(id, 404, 'method not implement'));
       }
 
+      // 在调用真正处理函数前，调用拦截器（中间件）
+      // const middlewares = container.getAll(Middleware);
+      // const composed = compose(middlewares);
+
       const result = fn.apply(inst, params);
 
       if (result instanceof Promise) {
