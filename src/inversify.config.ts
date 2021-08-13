@@ -8,14 +8,17 @@ import { Configuration } from './interfaces/Configuration';
 // import { ContextFactory, Context } from './interfaces/Context';
 import { Router } from './interfaces/Router';
 import { RouterImpl } from './impl/RouterOfJsonRpc';
-import { Controller } from './interfaces/Controller';
+import { Render } from './interfaces/Render';
+import { RenderImpl } from './impl/Render';
 
+import { Controller } from './interfaces/Controller';
 import { Home } from './user-modules/src/controllers/home';
 
 const container = new Container();
 
 container.bind(Configuration).to(ConfigurationImpl).inSingletonScope();
 container.bind(Router).to(RouterImpl).inSingletonScope();
+container.bind(Render).to(RenderImpl).inSingletonScope();
 
 // container.bind(ContextFactory).toFactory((ctx: interfaces.Context) => {
 //   return (req, res): Context => {

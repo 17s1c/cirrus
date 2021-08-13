@@ -23,3 +23,17 @@ export function jsonRpcError(id: string, code: number, message: string) {
     },
   };
 }
+
+export class Deferred<T> {
+  public readonly promise: Promise<T>;
+
+  resolve!: (data: T) => void;
+  reject!: (error?: Error) => void;
+
+  constructor() {
+    this.promise = new Promise<T>((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    });
+  }
+}

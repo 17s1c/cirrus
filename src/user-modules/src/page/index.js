@@ -1,8 +1,11 @@
-export function render() {
-  return {
-    title: 'Page',
-    uer: {
-      name: 'user',
-    },
-  };
-}
+module.exports = {
+  render() {
+    return {
+      title: 'Home',
+      user: {
+        name: 'xxxyyyzzz',
+      },
+    };
+  },
+  config: {},
+};

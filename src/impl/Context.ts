@@ -1,18 +1,24 @@
-import { inject, injectable } from "inversify";
-import { Context } from "../interfaces/Context";
-import { Session } from "../interfaces/Session";
+import { IncomingMessage, ServerResponse } from 'http';
+import { inject, injectable } from 'inversify';
+import { Context } from '../interfaces/Context';
+import { Session } from '../interfaces/Session';
+import { RPCRequest } from './RouterOfJsonRpc';
 
 @injectable()
 export class ContextImpl implements Context {
-    @inject(Session)
-    session!: Session;
+  [key: string]: any;
+  req!: { body: RPCRequest } & IncomingMessage;
+  res!: ServerResponse;
 
-    // set req(req: any) {
-    //     this.req = req;
-    // }
+  @inject(Session)
+  session!: Session;
 
-    // [key: string]: any;
-    // session: Session;
-    req: Request;
-    res: Response;
+  // set req(req: any) {
+  //     this.req = req;
+  // }
+
+  // [key: string]: any;
+  // session: Session;
+  // req: Request;
+  // res: Response;
 }

@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 import { Container } from 'inversify';
 import express from 'express';
@@ -6,10 +7,12 @@ import { Context } from '../interfaces/Context';
 import { Configuration } from '../interfaces/Configuration';
 import { Router } from '../interfaces/Router';
 import { container } from '../inversify.config';
-import { jsonRpcError, logWithId } from '../utils';
+import { Render } from '../interfaces/Render';
+import { logWithId } from '../utils';
 
 const config = container.get<Configuration>(Configuration);
 const router = container.get<Router>(Router);
+const render = container.get<Render>(Render);
 
 // 在服务启动前，运行服务的前置函数
 router.beforeStart!();
@@ -67,6 +70,31 @@ app.post('/api', (req, res, next) => {
     } finally {
       local.delete(id);
       logWithId('exit' + JSON.stringify(local));
+    }
+  });
+});
+
+app.use((req, res, next) => {
+  const { url } = req;
+
+  // FIXME: 需要判断 URL 是不是相对路径，否则有逃逸风险
+  const templatePath = path.join(config.get('pageDir'), url);
+
+  fs.access(templatePath, fs.constants.R_OK, err => {
+    if (err) {
+      next();
+    } else {
+      // TODO: 处理首页的情况
+      render
+        .render(templatePath)
+        .then(html => {
+          res.end(html);
+        })
+        .catch(err => {
+          // TODO: logger
+          console.error('render error:', err);
+          res.status(500).end(err.message);
+        });
     }
   });
 });
