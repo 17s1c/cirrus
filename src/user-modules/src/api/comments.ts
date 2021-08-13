@@ -2,13 +2,14 @@ import { S } from '../../../s';
 
 export const config = {};
 
-export function index(id: string) {
+export function index(addr: string) {
   const req = S.request;
 
   const { url } = req;
   // return S.render('index.html', { url });
   return {
-    id,
+    id: S.id,
+    addr,
     url,
   };
 }

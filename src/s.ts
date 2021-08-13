@@ -15,7 +15,9 @@ export interface IS {
   request: IncomingMessage;
   response: ServerResponse;
 }
-export const S = new Proxy({} as IS, {
+
+const target = {} as IS;
+export const S = new Proxy(target, {
   get<T>(target: any, name: string): T {
     const id = asyncLocalStorage.getStore() as number;
     if (name === 'id') {
@@ -28,4 +30,3 @@ export const S = new Proxy({} as IS, {
     return local.get(id)[name];
   },
 });
-// (global as any).S = S as typeof S;
