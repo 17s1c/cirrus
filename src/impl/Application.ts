@@ -1,6 +1,6 @@
 import path from 'path';
 import express from 'express';
-import { inject, injectable } from 'inversify';
+import {inject, injectable, postConstruct} from 'inversify';
 import { id, local, asyncLocalStorage } from '../s';
 import { logWithId } from '../utils';
 import { Application } from '../interfaces/Application';
@@ -14,29 +14,32 @@ export class ApplicationImpl implements Application {
     @inject(Dispatch) public readonly dispatcher: Dispatch,
   ) {}
 
-  async start() {
+  @postConstruct()
+  async init() {
     // 在服务启动前，运行服务的前置函数
-    this.dispatcher.beforeStart!();
+    await this.dispatcher.beforeStart!();
+  }
 
+  async start() {
     // 创建服务器
     const app = express();
     app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
+    app.use(express.urlencoded({ extended: true, parameterLimit: 6*1024*1024 }));
 
-    // TOOD: 通过计算或者配置得到 public 路径
+    // TODO: 通过计算或者配置得到 public 路径
     app.use('/public', express.static(path.join(__dirname, '..', 'user-modules', 'public')));
 
     app.use((req, res, next) => {
       asyncLocalStorage.run(id(), () => {
-        const id = asyncLocalStorage.getStore() as number;
+        const id = asyncLocalStorage.getStore();
         logWithId('start');
-        local.set(id, {
+        local.set(id!, {
           request: req,
           response: res,
         });
 
         function clean() {
-          local.delete(id);
+          local.delete(id!);
           logWithId('exit' + JSON.stringify(local));
         }
 

@@ -1,18 +1,38 @@
-import { S } from '../../../s';
+import { S, service, model } from '../../../s';
+
+// cache interface
 
 export const config = {};
 
-export function index(addr: string) {
-  const req = S.request;
+export function index(address: string) {
+  // const req = S.request;
 
-  const { url } = req;
+  // @haotian 运行时 middleware
+
+  // form-data
+  // upload file/download file
+  // websocket(upload, push, ...)
+  // 其他端调用：导出对应端 SDK
+
+  // const cache = service.cache;
+  // cache.set(address, {});
+
+  // const user = model.User
+  // // TypeORM
+  // user.findOne({ address }, (err, user) => {})
+
+  // const { url } = req;
   return {
-    id: S.id,
-    addr,
+    // id: S.id,
+    address: address.split('').reverse().join(''),
     server_time: new Date(),
-    url,
+    // url,
   };
 }
+
+// funtion isString cutomerFuntion
+// joi
+// index.validators = [DTO/function];
 
 // export function list() {
 //   return {
