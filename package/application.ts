@@ -9,6 +9,7 @@ import { Container } from 'inversify'
 import { CommonContainer } from './container/common.container'
 import { ControllerContainer } from './container/controller.container'
 import { MiddlewareContainer } from './container/middleware.container'
+import { ServiceContainer } from './container/service.container'
 import { VALIDATION_PIPE, IValidationPipe } from './service/validation.pipe'
 import { REQUEST, IRequest } from './container/request.container'
 import { RESPONSE, IResponse } from './container/response.container'
@@ -27,6 +28,7 @@ class App {
     private middlewareContainer: MiddlewareContainer
     private controllerContainer: ControllerContainer
     private commonContainer: CommonContainer
+    private serviceContainer: ServiceContainer
 
     private constructor(private readonly app: core.Express) {}
 
@@ -46,8 +48,17 @@ class App {
         return this.appContainer.get<IResponse>(`${RESPONSE}:${requestID}`)
     }
 
+    getService<T>(service: any): T {
+        return this.appContainer.get(service)
+    }
+
     validate<T>(value: any, metaType: any): T {
         return this.validationPipe.transform(value, metaType)
+    }
+
+    private _service() {
+        this.serviceContainer = new ServiceContainer(this.appContainer)
+        this.serviceContainer.register(appConfig.service)
     }
 
     private _middleware() {
@@ -84,6 +95,7 @@ class App {
         app.use(bodyParser.json())
         App.application = new App(app)
         App.application._common()
+        App.application._service()
         App.application._middleware()
         App.application._router()
         const httpExceptionFilter = App.application.container.get<

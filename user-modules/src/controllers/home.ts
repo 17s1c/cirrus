@@ -1,20 +1,13 @@
-import { Application, ContextInterface } from '../../../package/application'
-import * as Joi from 'Joi'
+import { Application } from '../../../package/application'
 
-import { ControllerAbstract } from '../../../package/container/controller.container'
-import { DemoLoginPostReqDto } from '../dtos/demoLoginPostReq.dto'
+import { IController } from '../../../package/container/controller.container'
+import DemoService, { IDemoService } from '../service/demo.service'
 
-export default class extends ControllerAbstract {
-    async index() {
-        // const req = Application.getRequest(requestID)
-        // const res = Application.getResponse(requestID)
-        // // Application.validate(request.body, DemoLoginPostReqDto)
-        // const schema = {
-        //   name: Joi.string(),
-        //   password: Joi.number().required()
-        // }
-        // Application.validate(req.body, schema)
-        // response.send({ headers: request.headers, body: request.body })
+export default class Home implements IController {
+    async index(data) {
+        const demoService = Application.getService<IDemoService>(DemoService)
+        demoService.addUser(data)
+        return demoService.getUser()
     }
 
     // Middleware(req.res){

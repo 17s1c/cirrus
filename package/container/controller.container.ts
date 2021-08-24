@@ -5,11 +5,21 @@ import * as _ from 'lodash'
 import * as uniqid from 'uniqid'
 import { ContextInterface } from '../application'
 import { ControllerConfig } from '../interfaces/config.interface'
+import { Options } from './middleware.container'
 import { REQUEST, RequestContainer, IRequest } from './request.container'
 import { RESPONSE, ResponseContainer, IResponse } from './response.container'
 
-export abstract class ControllerAbstract {
-    abstract index(context: ContextInterface): any
+export interface IController {
+    index(context: ContextInterface): any
+}
+
+export const CONTROLLER_METADATA = 'CONTROLLER_METADATA'
+
+export function ControllerInjectable(options: any = {}): ClassDecorator {
+    return (target: object) => {
+        decorate(injectable(), target)
+        Reflect.defineMetadata(CONTROLLER_METADATA, options, target)
+    }
 }
 
 @injectable()
@@ -21,9 +31,16 @@ export class ControllerContainer {
 
     register(controllers: ControllerConfig[]) {
         const router = express.Router()
-        _.map(controllers, ({ Api, Controller, TargetNamed }) => {
-            decorate(injectable(), Controller)
-            this.container.bind<ControllerAbstract>(TargetNamed).to(Controller)
+        _.map(controllers, ({ Api, Controller }) => {
+            const metaData: Options = Reflect.getMetadata(
+                CONTROLLER_METADATA,
+                Controller
+            )
+            if (_.isNil(metaData)) {
+                decorate(injectable(), Controller)
+            }
+            this.container.bind<IController>(Controller).toSelf()
+            const controller: any = this.container.get(Controller)
             router.post(Api, async (req, res, next) => {
                 const requestID = uniqid.process('api-')
                 const REQ = `${REQUEST}:${requestID}`
@@ -36,7 +53,6 @@ export class ControllerContainer {
                 this.container.bind<IResponse>(RES).toDynamicValue(() => {
                     return responseImp
                 })
-                const controller = new Controller()
                 try {
                     const data = await controller.index(req.body)
                     res.send(data)
