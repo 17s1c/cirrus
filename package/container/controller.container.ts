@@ -41,12 +41,7 @@ export class ControllerContainer {
                     const data = await controller.index(req.body)
                     res.send(data)
                 } catch (err) {
-                    console.error(err)
-                    res.status(err?.status || 500)
-                    res.send({
-                        code: err?.code,
-                        error: err?.message
-                    })
+                    next(err)
                 } finally {
                     this.container.unbind(REQ)
                     this.container.unbind(RES)

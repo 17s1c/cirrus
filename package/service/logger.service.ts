@@ -15,6 +15,7 @@ export default class LoggerService implements ILoggerService {
 
     constructor(logLevel = 'info') {
         this.logger = pino({
+            prettyPrint: true,
             level: logLevel,
             customLevels: {
                 audit: 35

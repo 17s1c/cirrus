@@ -5,17 +5,14 @@ import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as _ from 'lodash'
 import * as core from 'express-serve-static-core'
 import { appConfig } from './app.config'
-import { Container, decorate, injectable } from 'inversify'
+import { Container } from 'inversify'
 import { CommonContainer } from './container/common.container'
 import { ControllerContainer } from './container/controller.container'
 import { MiddlewareContainer } from './container/middleware.container'
-import {
-    validationPipe,
-    ValidationPipe,
-    ValidationPipeInterface
-} from './container/validationPipe.container'
+import { VALIDATION_PIPE, IValidationPipe } from './service/validation.pipe'
 import { REQUEST, IRequest } from './container/request.container'
 import { RESPONSE, IResponse } from './container/response.container'
+import { EXCEPTION, IExceptionFilter } from './service/httpException.filter'
 
 export interface ContextInterface {
     readonly requestID: string
@@ -33,8 +30,12 @@ class App {
 
     private constructor(private readonly app: core.Express) {}
 
-    get validationPipe(): ValidationPipeInterface {
-        return this.appContainer.get<ValidationPipeInterface>(validationPipe)
+    get validationPipe(): IValidationPipe {
+        return this.appContainer.get<IValidationPipe>(VALIDATION_PIPE)
+    }
+
+    get container(): interfaces.Container {
+        return this.appContainer
     }
 
     getRequest(requestID: string): IRequest {
@@ -43,10 +44,6 @@ class App {
 
     getResponse(requestID: string): IResponse {
         return this.appContainer.get<IResponse>(`${RESPONSE}:${requestID}`)
-    }
-
-    getContainer(): interfaces.Container {
-        return this.appContainer
     }
 
     validate<T>(value: any, metaType: any): T {
@@ -71,7 +68,10 @@ class App {
 
     private _common() {
         this.commonContainer = new CommonContainer(this.appContainer)
-        this.commonContainer.register()
+        this.commonContainer.register(
+            appConfig.validationPipe,
+            appConfig.httpExceptionFilter
+        )
     }
 
     listen(port: number, callback: () => any) {
@@ -83,18 +83,15 @@ class App {
         app.use(bodyParser.urlencoded({ extended: false }))
         app.use(bodyParser.json())
         App.application = new App(app)
-        //
-        const container = App.application.getContainer()
-        const validationMiddleware = _.isFunction(appConfig.validationPipe)
-            ? (appConfig.validationPipe as any)
-            : ValidationPipe
-        decorate(injectable(), validationMiddleware)
-        container
-            .bind<ValidationPipeInterface>(validationPipe)
-            .to(validationMiddleware)
         App.application._common()
         App.application._middleware()
         App.application._router()
+        const httpExceptionFilter = App.application.container.get<
+            IExceptionFilter
+        >(EXCEPTION)
+        app.use((err, req, res, next) =>
+            httpExceptionFilter.catch(err, req, res, next)
+        )
         return App.application
     }
 }

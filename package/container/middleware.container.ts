@@ -4,39 +4,39 @@ import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as _ from 'lodash'
 
 export interface Options {
-    global: boolean
+    global?: boolean
     api?: string[]
 }
 
 export interface Value {
     options: Options
-    middleware: MiddlewareInterface
+    middleware: IMiddleware
 }
 
 export interface MiddlewareMap {
     clear(): void
-    delete(key: MiddlewareInterface): boolean
+    delete(key: IMiddleware): boolean
     forEach(
         callbackfn: (
             value: Value,
-            key: MiddlewareInterface,
-            map: Map<MiddlewareInterface, Value>
+            key: IMiddleware,
+            map: Map<IMiddleware, Value>
         ) => void,
         thisArg?: any
     ): void
-    get(key: MiddlewareInterface): Value | undefined
-    has(key: MiddlewareInterface): boolean
-    set(key: MiddlewareInterface, value: Value): this
+    get(key: IMiddleware): Value | undefined
+    has(key: IMiddleware): boolean
+    set(key: IMiddleware, value: Value): this
     readonly size: number
 }
 
-export interface MiddlewareInterface<TRequest = any, TResponse = any> {
+export interface IMiddleware<TRequest = any, TResponse = any> {
     use(req: TRequest, res: TResponse, next: () => void): any
 }
 
 export const MIDDLEWARE_METADATA = 'MIDDLEWARE_METADATA'
 
-export const MIDDLEWARE = Symbol.for('Middleware')
+export const MIDDLEWARE = Symbol.for('MIDDLEWARE')
 
 export function MiddlewareInjectable(options: Options): ClassDecorator {
     return (target: object) => {
@@ -56,7 +56,7 @@ export class MiddlewareContainer {
         private readonly container: interfaces.Container
     ) {}
 
-    register(middlewareList: MiddlewareInterface[]) {
+    register(middlewareList: IMiddleware[]) {
         _.map(middlewareList, middleware => {
             const options: Options = Reflect.getMetadata(
                 MIDDLEWARE_METADATA,
@@ -64,24 +64,27 @@ export class MiddlewareContainer {
             )
             this.container.bind(middleware as any).toSelf()
             this.middlewareMap.set(middleware, { middleware, options })
-            if (options && options.global)
+            if (options && options.global) {
                 this.globalMiddlewareMap.set(middleware, {
                     middleware,
                     options
                 })
+                const globalMiddleware = this.container.get<IMiddleware>(
+                    middleware as any
+                )
+                this.app.use((req, res, next) =>
+                    globalMiddleware.use(req, res, next)
+                )
+            } else {
+                const _middleware = this.container.get<IMiddleware>(
+                    middleware as any
+                )
+                _.map(options.api, api =>
+                    this.app.use(api, (req, res, next) =>
+                        _middleware.use(req, res, next)
+                    )
+                )
+            }
         })
-
-        const router = express.Router()
-        const globalMiddlewareMap = this.globalMiddlewareMap
-        globalMiddlewareMap.forEach(({ middleware: GlobalMiddleware }) => {
-            // @ts-ignore
-            const globalMiddleware = this.container.get<GlobalMiddleware>(
-                GlobalMiddleware as any
-            )
-            this.app.use((req, res, next) =>
-                globalMiddleware.use(req, res, next)
-            )
-        })
-        this.app.use('/', router)
     }
 }

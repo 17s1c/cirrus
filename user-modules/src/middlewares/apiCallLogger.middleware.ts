@@ -2,12 +2,12 @@ import { Request, Response } from 'express'
 import { get } from 'lodash'
 import {
     MiddlewareInjectable,
-    MiddlewareInterface
+    IMiddleware
 } from '../../../package/container/middleware.container'
 import LoggerService from '../../../package/service/logger.service'
 
-@MiddlewareInjectable({ global: true })
-export class APICallLoggerMiddleware implements MiddlewareInterface {
+@MiddlewareInjectable({ api: ['/home', '/demo'] })
+export class APICallLoggerMiddleware implements IMiddleware {
     constructor(private readonly loggerService: LoggerService) {}
 
     use(req: Request, _: Response, next): void {

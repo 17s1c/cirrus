@@ -1,3 +1,6 @@
+import { IValidationPipe } from '../service/validation.pipe'
+import { IExceptionFilter } from '../service/httpException.filter'
+
 export interface ControllerConfig {
     Api: string
     Controller: any
@@ -7,5 +10,6 @@ export interface ControllerConfig {
 export interface AppConfig {
     controllers: ControllerConfig[]
     validationPipe: any
+    httpExceptionFilter: any
     middleware: any[]
 }

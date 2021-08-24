@@ -1,5 +1,6 @@
 import Home from '../user-modules/src/controllers/home'
 import Demo from '../user-modules/src/controllers/demo'
+import { MyHttpExceptionFilter } from '../user-modules/src/filters/httpException.filter'
 import { APICallLoggerMiddleware } from '../user-modules/src/middlewares/apiCallLogger.middleware'
 import { MyValidationPipe } from '../user-modules/src/pipes/validation.pipe'
 import { AppConfig } from './interfaces/config.interface'
@@ -19,5 +20,6 @@ export const appConfig: AppConfig = {
         }
     ],
     validationPipe: MyValidationPipe,
+    httpExceptionFilter: MyHttpExceptionFilter,
     middleware: [APICallLoggerMiddleware]
 }

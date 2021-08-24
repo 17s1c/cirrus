@@ -1,4 +1,4 @@
-import { Application, ContextInterface } from '../../../package/application'
+import { Application } from '../../../package/application'
 import * as Joi from 'Joi'
 
 import { ControllerAbstract } from '../../../package/container/controller.container'
