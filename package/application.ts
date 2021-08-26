@@ -4,8 +4,8 @@ import * as bodyParser from 'body-parser'
 import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as _ from 'lodash'
 import * as core from 'express-serve-static-core'
-import { appConfig } from './app.config'
 import { Container } from 'inversify'
+import { moduleConfig } from './config/module.config'
 import { CommonContainer } from './container/common.container'
 import { ControllerContainer } from './container/controller.container'
 import { MiddlewareContainer } from './container/middleware.container'
@@ -58,30 +58,30 @@ class App {
 
     private _service() {
         this.serviceContainer = new ServiceContainer(this.appContainer)
-        this.serviceContainer.register(appConfig.service)
+        this.serviceContainer.register(moduleConfig.service)
     }
 
     private _middleware() {
         this.middlewareContainer = new MiddlewareContainer(
             this.app,
-            this.appContainer
+            this.appContainer,
         )
-        this.middlewareContainer.register(appConfig.middleware)
+        this.middlewareContainer.register(moduleConfig.middleware)
     }
 
     private _router() {
         this.controllerContainer = new ControllerContainer(
             this.app,
-            this.appContainer
+            this.appContainer,
         )
-        this.controllerContainer.register(appConfig.controllers)
+        this.controllerContainer.register(moduleConfig.controllers)
     }
 
     private _common() {
         this.commonContainer = new CommonContainer(this.appContainer)
         this.commonContainer.register(
-            appConfig.validationPipe,
-            appConfig.httpExceptionFilter
+            moduleConfig.validationPipe,
+            moduleConfig.httpExceptionFilter,
         )
     }
 
@@ -102,7 +102,7 @@ class App {
             IExceptionFilter
         >(EXCEPTION)
         app.use((err, req, res, next) =>
-            httpExceptionFilter.catch(err, req, res, next)
+            httpExceptionFilter.catch(err, req, res, next),
         )
         return App.application
     }

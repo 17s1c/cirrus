@@ -1,4 +1,4 @@
-import { ServiceInjectable } from '../../../package/container/service.container'
+import { Service } from '../../../package/container/service.container'
 import LoggerService from '../../../package/service/logger.service'
 
 export interface IDemoService {
@@ -6,7 +6,7 @@ export interface IDemoService {
     getUser()
 }
 
-@ServiceInjectable()
+@Service()
 export default class DemoService implements IDemoService {
     readonly userList = []
 

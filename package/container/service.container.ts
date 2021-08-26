@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 
 export const SERVICE_METADATA = 'SERVICE_METADATA'
 
-export function ServiceInjectable(options?: any): ClassDecorator {
+export function Service(options?: any): ClassDecorator {
     return (target: object) => {
         decorate(injectable(), target)
         Reflect.defineMetadata(SERVICE_METADATA, options, target)

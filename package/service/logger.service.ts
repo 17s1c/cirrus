@@ -2,11 +2,11 @@ import { injectable } from 'inversify'
 import * as pino from 'pino'
 
 export interface ILoggerService {
-    auditLog(payload)
-    infoLog(payload)
-    debugLog(payload)
-    warnLog(payload)
-    errorLog(payload)
+    audit(payload)
+    info(payload)
+    debug(payload)
+    warn(payload)
+    error(payload)
 }
 
 @injectable()
@@ -18,28 +18,28 @@ export default class LoggerService implements ILoggerService {
             prettyPrint: true,
             level: logLevel,
             customLevels: {
-                audit: 35
-            }
+                audit: 35,
+            },
         })
     }
 
-    auditLog(payload) {
+    audit(payload) {
         this.logger.audit(payload)
     }
 
-    infoLog(payload) {
+    info(payload) {
         this.logger.audit(payload)
     }
 
-    debugLog(payload) {
+    debug(payload) {
         this.logger.debug(payload)
     }
 
-    warnLog(payload) {
+    warn(payload) {
         this.logger.warn(payload)
     }
 
-    errorLog(payload) {
+    error(payload) {
         this.logger.error(payload)
     }
 }

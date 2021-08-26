@@ -11,7 +11,7 @@ export interface IValidationPipe {
     transform(value: any, metaType: any): any
 }
 
-export function ValidationPipeInjectable(options?: any): ClassDecorator {
+export function Validation(options?: any): ClassDecorator {
     return (target: object) => {
         decorate(injectable(), target)
         Reflect.defineMetadata(VALIDATION_PIPE_METADATA, options, target)

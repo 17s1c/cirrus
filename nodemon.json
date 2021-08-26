@@ -1,5 +1,6 @@
 {
-  "ext": "ts",
-  "exec": "ts-node index.ts",
-  "delay": "500"
+  "watch": ["user-modules"],
+  "ext": "ts,json",
+  "ignore": ["src/**/*.spec.ts"],
+  "exec": "ts-node package/main.ts"
 }

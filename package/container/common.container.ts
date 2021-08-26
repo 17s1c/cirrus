@@ -4,12 +4,12 @@ import * as _ from 'lodash'
 import {
     VALIDATION_PIPE,
     ValidationPipe,
-    IValidationPipe
+    IValidationPipe,
 } from '../service/validation.pipe'
 import {
     EXCEPTION,
     HttpExceptionFilter,
-    IExceptionFilter
+    IExceptionFilter,
 } from '../service/httpException.filter'
 
 import LoggerService, { ILoggerService } from '../service/logger.service'
@@ -20,7 +20,7 @@ export class CommonContainer {
 
     register(
         customValidationPipe: IValidationPipe,
-        customHttpExceptionFilter: IExceptionFilter
+        customHttpExceptionFilter: IExceptionFilter,
     ) {
         this.container.bind<ILoggerService>(LoggerService).toSelf()
 

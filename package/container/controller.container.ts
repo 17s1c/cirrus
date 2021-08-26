@@ -15,7 +15,7 @@ export interface IController {
 
 export const CONTROLLER_METADATA = 'CONTROLLER_METADATA'
 
-export function ControllerInjectable(options: any = {}): ClassDecorator {
+export function Controller(options: any = {}): ClassDecorator {
     return (target: object) => {
         decorate(injectable(), target)
         Reflect.defineMetadata(CONTROLLER_METADATA, options, target)
@@ -26,7 +26,7 @@ export function ControllerInjectable(options: any = {}): ClassDecorator {
 export class ControllerContainer {
     constructor(
         private readonly app: express.Express,
-        private readonly container: interfaces.Container
+        private readonly container: interfaces.Container,
     ) {}
 
     register(controllers: ControllerConfig[]) {
@@ -34,7 +34,7 @@ export class ControllerContainer {
         _.map(controllers, ({ Api, Controller }) => {
             const metaData: Options = Reflect.getMetadata(
                 CONTROLLER_METADATA,
-                Controller
+                Controller,
             )
             if (_.isNil(metaData)) {
                 decorate(injectable(), Controller)

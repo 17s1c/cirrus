@@ -1,10 +1,13 @@
 import { Application } from '../../../package/application'
 import * as Joi from 'Joi'
 
-import { ControllerInjectable, IController } from '../../../package/container/controller.container';
+import {
+    Controller,
+    IController,
+} from '../../../package/container/controller.container'
 import DemoService from '../service/demo.service'
 
-@ControllerInjectable()
+@Controller()
 export default class Demo implements IController {
     constructor(private readonly demoService: DemoService) {}
 
@@ -12,7 +15,7 @@ export default class Demo implements IController {
         // Application.validate(request.body, DemoLoginPostReqDto)
         const schema = {
             name: Joi.string(),
-            password: Joi.number().required()
+            password: Joi.number().required(),
         }
         data = Application.validate(data, schema)
         this.demoService.addUser(data)

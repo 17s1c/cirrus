@@ -11,7 +11,7 @@ export const EXCEPTION_METADATA = 'MIDDLEWARE_METADATA'
 
 export const EXCEPTION = Symbol.for('EXCEPTION')
 
-export function ExceptionInjectable(options?: any): ClassDecorator {
+export function Exception(options?: any): ClassDecorator {
     return (target: object) => {
         decorate(injectable(), target)
         Reflect.defineMetadata(EXCEPTION_METADATA, options, target)
@@ -23,11 +23,11 @@ export class HttpExceptionFilter implements IExceptionFilter {
     constructor(private readonly loggerService: LoggerService) {}
 
     catch(err, req: Request, res: Response, next: NextFunction): void {
-        this.loggerService.errorLog(err)
+        this.loggerService.error(err)
         res.status(err?.status || 500)
         res.send({
             code: err?.code,
-            error: err?.message
+            error: err?.message,
         })
     }
 }

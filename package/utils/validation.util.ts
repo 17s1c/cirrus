@@ -12,7 +12,7 @@ import {
     omitBy,
     some,
     transform,
-    isObject
+    isObject,
 } from 'lodash'
 import { ValidationErrorException } from '../exceptions/validation.exception'
 
@@ -21,14 +21,14 @@ const generateErrorMsg = (errors: ValidationError, initial = ''): any[] => {
         if (!error.contraints && !isEmpty(get(error, 'children', []))) {
             return {
                 path: `${initial}${get(error, 'property')}`,
-                children: generateErrorMsg(error.children)
+                children: generateErrorMsg(error.children),
             }
         }
         const constraints = get(error, 'constraints', null)
         return {
             path: `${initial}${get(error, 'property')}`,
             msg: constraints ? JSON.stringify(constraints) : 'error unknown',
-            value: get(error, 'value')
+            value: get(error, 'value'),
         }
     })
 }
@@ -43,7 +43,7 @@ const transformErrorMsg = (errMsg: any[]): any => {
                 result.push({
                     path: newPath,
                     msg: child.msg,
-                    value: child.value
+                    value: child.value,
                 })
             } else {
                 handleChildren(child.children, newPath)
@@ -64,8 +64,8 @@ export const getErrorMsg = (err: any, arrResponse = false): any[] => {
                         return null
                     }
                     return generateErrorMsg(e, `${index}.`)
-                })
-            )
+                }),
+            ),
         )
     } else {
         errorMsg = generateErrorMsg(err)
@@ -77,12 +77,12 @@ export const getErrorMsg = (err: any, arrResponse = false): any[] => {
 export const validateAndTransform = (
     classType: any,
     value: any | any[],
-    location: string
+    location: string,
 ): any => {
     const classObject = plainToClass(classType, value, classTransformOptions)
     if (isArray(classObject)) {
         const errors = map(classObject, objectElement =>
-            validateSync(objectElement, validatorOptions)
+            validateSync(objectElement, validatorOptions),
         )
         if (some(errors, error => error.length !== 0)) {
             // @ts-ignore
@@ -115,10 +115,10 @@ export const omitByDeep = <T>(obj: T, predicate: any): T => {
 export const validatorOptions = {
     validationError: {
         target: false,
-        value: true
-    }
+        value: true,
+    },
 }
 
 export const classTransformOptions = {
-    enableImplicitConversion: true
+    enableImplicitConversion: true,
 }

@@ -3,10 +3,14 @@ export interface ControllerConfig {
     Controller: any
 }
 
-export interface AppConfig {
+export interface ModuleConfig {
     controllers: ControllerConfig[]
     validationPipe: any
     httpExceptionFilter: any
     middleware: any[]
     service: any[]
+}
+
+export interface AppConfig {
+    port: number
 }
