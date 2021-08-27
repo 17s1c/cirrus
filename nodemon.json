@@ -1,6 +1,6 @@
 {
-    "watch": ["src"],
-    "ext": "ts,json",
-    "ignore": ["src/**/*.spec.ts"],
-    "exec": "ts-node src/bin/start.ts"
-  }
+  "watch": ["user-modules"],
+  "ext": "ts,json",
+  "ignore": ["src/**/*.spec.ts"],
+  "exec": "ts-node package/main.ts"
+}
