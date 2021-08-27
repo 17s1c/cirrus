@@ -1,9 +1,10 @@
-import { Application } from './application'
+import { App } from './application'
 import { appConfig } from './config/app.config'
 
 async function bootstrap() {
     const { port } = appConfig
-    Application.listen(port, () =>
+    await App.init()
+    App.Application.listen(port, () =>
         console.log(`application running on port ${port}`),
     )
 }

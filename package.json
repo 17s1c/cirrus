@@ -19,8 +19,10 @@
         "http-errors": "^1.8.0",
         "joi": "14.3.1",
         "lodash": "^4.17.19",
+        "mysql2": "^2.2.5",
         "pino": "^6.13.1",
         "reflect-metadata": "^0.1.13",
+        "typeorm": "^0.2.37",
         "uniqid": "^5.0.3"
     },
     "devDependencies": {
@@ -30,8 +32,8 @@
         "@types/joi": "^14.3.1",
         "@types/lodash": "^4.14.172",
         "@types/node": "^12.11.1",
-        "@types/uniqid": "^4.1.3",
         "@types/pino": "^6.3.11",
+        "@types/uniqid": "^4.1.3",
         "nodemon": "^1.19.4",
         "pino-pretty": "^6.0.0",
         "prettier": "^1.18.2",

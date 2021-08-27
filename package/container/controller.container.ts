@@ -1,13 +1,19 @@
 import * as express from 'express'
-import { decorate, injectable } from 'inversify'
+import { injectable } from 'inversify'
 import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as _ from 'lodash'
 import * as uniqid from 'uniqid'
-import { ContextInterface } from '../application'
+import { decorateClass } from '../common/decorate.util'
 import { ControllerConfig } from '../interfaces/config.interface'
 import { Options } from './middleware.container'
 import { REQUEST, RequestContainer, IRequest } from './request.container'
 import { RESPONSE, ResponseContainer, IResponse } from './response.container'
+
+export interface ContextInterface {
+    readonly requestID: string
+    readonly request: IRequest
+    readonly response: IResponse
+}
 
 export interface IController {
     index(context: ContextInterface): any
@@ -17,7 +23,7 @@ export const CONTROLLER_METADATA = 'CONTROLLER_METADATA'
 
 export function Controller(options: any = {}): ClassDecorator {
     return (target: object) => {
-        decorate(injectable(), target)
+        decorateClass([injectable()], target)
         Reflect.defineMetadata(CONTROLLER_METADATA, options, target)
     }
 }
@@ -37,7 +43,7 @@ export class ControllerContainer {
                 Controller,
             )
             if (_.isNil(metaData)) {
-                decorate(injectable(), Controller)
+                decorateClass([injectable()], Controller)
             }
             this.container.bind<IController>(Controller).toSelf()
             const controller: any = this.container.get(Controller)
@@ -65,5 +71,13 @@ export class ControllerContainer {
             })
         })
         this.app.use('/', router)
+    }
+
+    getRequest(requestID: string): IRequest {
+        return this.container.get<IRequest>(`${REQUEST}:${requestID}`)
+    }
+
+    getResponse(requestID: string): IResponse {
+        return this.container.get<IResponse>(`${RESPONSE}:${requestID}`)
     }
 }

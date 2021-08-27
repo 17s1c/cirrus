@@ -5,14 +5,14 @@ import {
     VALIDATION_PIPE,
     ValidationPipe,
     IValidationPipe,
-} from '../service/validation.pipe'
+} from '../common/validation.pipe'
 import {
     EXCEPTION,
     HttpExceptionFilter,
     IExceptionFilter,
-} from '../service/httpException.filter'
+} from '../common/httpException.filter'
 
-import LoggerService, { ILoggerService } from '../service/logger.service'
+import LoggerService, { ILoggerService } from '../common/logger.service'
 
 @injectable()
 export class CommonContainer {
@@ -35,5 +35,13 @@ export class CommonContainer {
             ? (customHttpExceptionFilter as any)
             : HttpExceptionFilter
         this.container.bind<IExceptionFilter>(EXCEPTION).to(httpExceptionFilter)
+    }
+
+    get validationPipe(): IValidationPipe {
+        return this.container.get<IValidationPipe>(VALIDATION_PIPE)
+    }
+
+    validate<T>(value: any, metaType: any): T {
+        return this.validationPipe.transform(value, metaType)
     }
 }

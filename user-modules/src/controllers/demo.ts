@@ -1,4 +1,4 @@
-import { Application } from '../../../package/application'
+import { App } from '../../../package/application'
 import * as Joi from 'Joi'
 
 import {
@@ -17,8 +17,8 @@ export default class Demo implements IController {
             name: Joi.string(),
             password: Joi.number().required(),
         }
-        data = Application.validate(data, schema)
-        this.demoService.addUser(data)
-        return this.demoService.getUser()
+        data = App.Common.validate(data, schema)
+        await this.demoService.save(data)
+        return this.demoService.findOne()
     }
 }

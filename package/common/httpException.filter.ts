@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
-import { decorate, injectable } from 'inversify'
+import { injectable } from 'inversify'
 import { MIDDLEWARE_METADATA } from '../container/middleware.container'
+import { decorateClass } from './decorate.util'
 import LoggerService from './logger.service'
 
 export interface IExceptionFilter<T = any> {
@@ -13,7 +14,7 @@ export const EXCEPTION = Symbol.for('EXCEPTION')
 
 export function Exception(options?: any): ClassDecorator {
     return (target: object) => {
-        decorate(injectable(), target)
+        decorateClass([injectable()], target)
         Reflect.defineMetadata(EXCEPTION_METADATA, options, target)
     }
 }

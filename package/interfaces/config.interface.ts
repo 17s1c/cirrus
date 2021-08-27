@@ -1,3 +1,5 @@
+import { ConnectionOptions } from 'typeorm'
+
 export interface ControllerConfig {
     Api: string
     Controller: any
@@ -8,9 +10,11 @@ export interface ModuleConfig {
     validationPipe: any
     httpExceptionFilter: any
     middleware: any[]
-    service: any[]
+    providers: any[]
+    model: any[]
 }
 
 export interface AppConfig {
     port: number
+    dbOptions: ConnectionOptions
 }

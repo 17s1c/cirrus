@@ -1,22 +1,27 @@
-import { Service } from '../../../package/container/service.container'
-import LoggerService from '../../../package/service/logger.service'
+import { Repository } from 'typeorm'
+import { InjectRepository } from '../../../package/container/repository.container'
+import { Provider } from '../../../package/container/provider.container'
+import UserModel from '../model/user.model'
 
 export interface IDemoService {
-    addUser(user)
-    getUser()
+    findOne()
+    save(user)
 }
 
-@Service()
+@Provider()
 export default class DemoService implements IDemoService {
-    readonly userList = []
+    constructor(
+        @InjectRepository(UserModel)
+        private userRepository: Repository<UserModel>,
+    ) {}
 
-    constructor(private readonly loggerService: LoggerService) {}
-
-    addUser(user) {
-        this.userList.push(user)
+    async findOne() {
+        return await this.userRepository.find()
     }
 
-    getUser() {
-        return this.userList
+    async save(user) {
+        let userModel = new UserModel()
+        userModel = Object.assign(user, userModel)
+        return this.userRepository.save(userModel)
     }
 }
