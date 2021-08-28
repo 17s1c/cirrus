@@ -3,7 +3,7 @@ import { ValidationErrorException } from '../../../package/exceptions/validation
 import {
     IValidationPipe,
     Validation,
-} from '../../../package/service/validation.pipe'
+} from '../../../package/common/validation.pipe'
 
 @Validation()
 export class MyValidationPipe implements IValidationPipe {

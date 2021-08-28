@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import { get } from 'lodash'
+import LoggerService from '../../../package/common/logger.service'
 import {
     Middleware,
     IMiddleware,
 } from '../../../package/container/middleware.container'
-import LoggerService from '../../../package/service/logger.service'
 
 @Middleware({ api: ['/home', '/demo'] })
 export class APICallLoggerMiddleware implements IMiddleware {

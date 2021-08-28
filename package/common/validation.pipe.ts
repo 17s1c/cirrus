@@ -1,7 +1,8 @@
-import { decorate, injectable } from 'inversify'
+import { injectable } from 'inversify'
 import { includes } from 'lodash'
 import { Type } from '../token/interface/common.interface'
 import { validateAndTransform } from '../utils/validation.util'
+import { decorateClass } from './decorate.util'
 
 export const VALIDATION_PIPE_METADATA = 'VALIDATION_PIPE_METADATA'
 
@@ -13,7 +14,7 @@ export interface IValidationPipe {
 
 export function Validation(options?: any): ClassDecorator {
     return (target: object) => {
-        decorate(injectable(), target)
+        decorateClass([injectable()], target)
         Reflect.defineMetadata(VALIDATION_PIPE_METADATA, options, target)
     }
 }

@@ -2,110 +2,96 @@ import 'reflect-metadata'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
 import { interfaces } from 'inversify/lib/interfaces/interfaces'
-import * as _ from 'lodash'
 import * as core from 'express-serve-static-core'
 import { Container } from 'inversify'
+import { appConfig } from './config/app.config'
 import { moduleConfig } from './config/module.config'
 import { CommonContainer } from './container/common.container'
 import { ControllerContainer } from './container/controller.container'
 import { MiddlewareContainer } from './container/middleware.container'
-import { ServiceContainer } from './container/service.container'
-import { VALIDATION_PIPE, IValidationPipe } from './service/validation.pipe'
-import { REQUEST, IRequest } from './container/request.container'
-import { RESPONSE, IResponse } from './container/response.container'
-import { EXCEPTION, IExceptionFilter } from './service/httpException.filter'
+import { RepositoryContainer } from './container/repository.container'
+import { ProviderContainer } from './container/provider.container'
+import { EXCEPTION, IExceptionFilter } from './common/httpException.filter'
 
-export interface ContextInterface {
-    readonly requestID: string
-    readonly request: IRequest
-    readonly response: IResponse
-}
-
-class App {
-    private static application: App
+export class App {
+    static Application: App
+    static Provider: ProviderContainer
+    static Middleware: MiddlewareContainer
+    static Controller: ControllerContainer
+    static Repository: RepositoryContainer
+    static Common: CommonContainer
 
     private appContainer: interfaces.Container = new Container()
-    private middlewareContainer: MiddlewareContainer
-    private controllerContainer: ControllerContainer
-    private commonContainer: CommonContainer
-    private serviceContainer: ServiceContainer
 
     private constructor(private readonly app: core.Express) {}
-
-    get validationPipe(): IValidationPipe {
-        return this.appContainer.get<IValidationPipe>(VALIDATION_PIPE)
-    }
 
     get container(): interfaces.Container {
         return this.appContainer
     }
 
-    getRequest(requestID: string): IRequest {
-        return this.appContainer.get<IRequest>(`${REQUEST}:${requestID}`)
+    private _provider(): ProviderContainer {
+        const providerContainer = new ProviderContainer(this.appContainer)
+        providerContainer.register(moduleConfig.providers)
+        return providerContainer
     }
 
-    getResponse(requestID: string): IResponse {
-        return this.appContainer.get<IResponse>(`${RESPONSE}:${requestID}`)
-    }
-
-    getService<T>(service: any): T {
-        return this.appContainer.get(service)
-    }
-
-    validate<T>(value: any, metaType: any): T {
-        return this.validationPipe.transform(value, metaType)
-    }
-
-    private _service() {
-        this.serviceContainer = new ServiceContainer(this.appContainer)
-        this.serviceContainer.register(moduleConfig.service)
-    }
-
-    private _middleware() {
-        this.middlewareContainer = new MiddlewareContainer(
+    private _middleware(): MiddlewareContainer {
+        const middlewareContainer = new MiddlewareContainer(
             this.app,
             this.appContainer,
         )
-        this.middlewareContainer.register(moduleConfig.middleware)
+        middlewareContainer.register(moduleConfig.middleware)
+        return middlewareContainer
     }
 
-    private _router() {
-        this.controllerContainer = new ControllerContainer(
+    private _router(): ControllerContainer {
+        const controllerContainer = new ControllerContainer(
             this.app,
             this.appContainer,
         )
-        this.controllerContainer.register(moduleConfig.controllers)
+        controllerContainer.register(moduleConfig.controllers)
+        return controllerContainer
     }
 
-    private _common() {
-        this.commonContainer = new CommonContainer(this.appContainer)
-        this.commonContainer.register(
+    private _common(): CommonContainer {
+        const commonContainer = new CommonContainer(this.appContainer)
+        commonContainer.register(
             moduleConfig.validationPipe,
             moduleConfig.httpExceptionFilter,
         )
+        return commonContainer
+    }
+
+    private async _repository(): Promise<RepositoryContainer> {
+        const repositoryContainer = new RepositoryContainer(this.appContainer, {
+            ...appConfig.dbOptions,
+            entities: moduleConfig.model,
+        })
+        await repositoryContainer.register(moduleConfig.model)
+        return repositoryContainer
     }
 
     listen(port: number, callback: () => any) {
         this.app.listen(port, callback)
     }
 
-    static init(): App {
+    static async init(): Promise<App> {
+        if (App.Application) return App.Application
         const app = express()
         app.use(bodyParser.urlencoded({ extended: false }))
         app.use(bodyParser.json())
-        App.application = new App(app)
-        App.application._common()
-        App.application._service()
-        App.application._middleware()
-        App.application._router()
-        const httpExceptionFilter = App.application.container.get<
+        App.Application = new App(app)
+        App.Common = App.Application._common()
+        await App.Application._repository()
+        App.Provider = App.Application._provider()
+        App.Middleware = App.Application._middleware()
+        App.Controller = App.Application._router()
+        const httpExceptionFilter = App.Application.container.get<
             IExceptionFilter
         >(EXCEPTION)
         app.use((err, req, res, next) =>
             httpExceptionFilter.catch(err, req, res, next),
         )
-        return App.application
+        return App.Application
     }
 }
-
-export const Application = App.init()

@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from 'express'
 import {
     Exception,
     IExceptionFilter,
-} from '../../../package/service/httpException.filter'
-import LoggerService from '../../../package/service/logger.service'
+} from '../../../package/common/httpException.filter'
+import LoggerService from '../../../package/common/logger.service'
 
 @Exception()
 export class MyHttpExceptionFilter implements IExceptionFilter {
