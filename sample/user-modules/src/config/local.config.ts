@@ -1,4 +1,4 @@
-import { AppConfig } from '../../../package/interfaces/config.interface'
+import { AppConfig } from 'cirri/lib/interfaces/config.interface'
 
 export const config: AppConfig = {
     port: 8080,

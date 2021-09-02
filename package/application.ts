@@ -4,14 +4,13 @@ import * as bodyParser from 'body-parser'
 import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as core from 'express-serve-static-core'
 import { Container } from 'inversify'
-import { appConfig } from './config/app.config'
-import { moduleConfig } from './config/module.config'
 import { CommonContainer } from './container/common.container'
 import { ControllerContainer } from './container/controller.container'
 import { MiddlewareContainer } from './container/middleware.container'
 import { RepositoryContainer } from './container/repository.container'
 import { ProviderContainer } from './container/provider.container'
 import { EXCEPTION, IExceptionFilter } from './common/httpException.filter'
+import { AppConfig, AppModule } from './interfaces/config.interface'
 
 export class App {
     static Application: App
@@ -21,9 +20,13 @@ export class App {
     static Repository: RepositoryContainer
     static Common: CommonContainer
 
-    private appContainer: interfaces.Container = new Container()
+    private readonly appContainer: interfaces.Container = new Container()
 
-    private constructor(private readonly app: core.Express) {}
+    private constructor(
+        private readonly app: core.Express,
+        private readonly appModule: AppModule,
+        private readonly appConfig: AppConfig,
+    ) {}
 
     get container(): interfaces.Container {
         return this.appContainer
@@ -31,7 +34,7 @@ export class App {
 
     private _provider(): ProviderContainer {
         const providerContainer = new ProviderContainer(this.appContainer)
-        providerContainer.register(moduleConfig.providers)
+        providerContainer.register(this.appModule.providers)
         return providerContainer
     }
 
@@ -40,7 +43,7 @@ export class App {
             this.app,
             this.appContainer,
         )
-        middlewareContainer.register(moduleConfig.middleware)
+        middlewareContainer.register(this.appModule.middleware)
         return middlewareContainer
     }
 
@@ -49,38 +52,43 @@ export class App {
             this.app,
             this.appContainer,
         )
-        controllerContainer.register(moduleConfig.controllers)
+        controllerContainer.register(this.appModule.controllers)
         return controllerContainer
     }
 
     private _common(): CommonContainer {
         const commonContainer = new CommonContainer(this.appContainer)
         commonContainer.register(
-            moduleConfig.validationPipe,
-            moduleConfig.httpExceptionFilter,
+            this.appModule.validationPipe,
+            this.appModule.httpExceptionFilter,
         )
         return commonContainer
     }
 
     private async _repository(): Promise<RepositoryContainer> {
         const repositoryContainer = new RepositoryContainer(this.appContainer, {
-            ...appConfig.dbOptions,
-            entities: moduleConfig.model,
+            ...this.appConfig.dbOptions,
+            entities: this.appModule.model,
         })
-        await repositoryContainer.register(moduleConfig.model)
+        await repositoryContainer.register(this.appModule.model)
         return repositoryContainer
     }
 
-    listen(port: number, callback: () => any) {
-        this.app.listen(port, callback)
+    listen() {
+        this.app.listen(this.appConfig.port, () =>
+            console.log(`application running on port ${this.appConfig.port}`),
+        )
     }
 
-    static async init(): Promise<App> {
+    static async init(
+        appModule: AppModule,
+        appConfig: AppConfig,
+    ): Promise<App> {
         if (App.Application) return App.Application
         const app = express()
         app.use(bodyParser.urlencoded({ extended: false }))
         app.use(bodyParser.json())
-        App.Application = new App(app)
+        App.Application = new App(app, appModule, appConfig)
         App.Common = App.Application._common()
         await App.Application._repository()
         App.Provider = App.Application._provider()

@@ -1,10 +1,10 @@
-import { App } from '../../../package/application'
-import * as Joi from 'Joi'
-
+import { App } from 'cirri/lib/application'
 import {
     Controller,
     IController,
-} from '../../../package/container/controller.container'
+} from 'cirri/lib/container/controller.container'
+import * as Joi from 'Joi'
+
 import DemoService from '../service/demo.service'
 
 @Controller()

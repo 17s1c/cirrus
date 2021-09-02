@@ -3,6 +3,7 @@ import { injectable } from 'inversify'
 import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as _ from 'lodash'
 import { decorateClass } from '../common/decorate.util'
+import { Type } from '../token/interface/common.interface'
 
 export interface Options {
     global?: boolean
@@ -11,23 +12,23 @@ export interface Options {
 
 export interface Value {
     options: Options
-    middleware: IMiddleware
+    middleware: Type<IMiddleware>
 }
 
 export interface MiddlewareMap {
     clear(): void
-    delete(key: IMiddleware): boolean
+    delete(key: Type<IMiddleware>): boolean
     forEach(
         callbackfn: (
             value: Value,
-            key: IMiddleware,
-            map: Map<IMiddleware, Value>,
+            key: Type<IMiddleware>,
+            map: Map<Type<IMiddleware>, Value>,
         ) => void,
         thisArg?: any,
     ): void
-    get(key: IMiddleware): Value | undefined
-    has(key: IMiddleware): boolean
-    set(key: IMiddleware, value: Value): this
+    get(key: Type<IMiddleware>): Value | undefined
+    has(key: Type<IMiddleware>): boolean
+    set(key: Type<IMiddleware>, value: Value): this
     readonly size: number
 }
 
@@ -57,7 +58,7 @@ export class MiddlewareContainer {
         private readonly container: interfaces.Container,
     ) {}
 
-    register(middlewareList: IMiddleware[]) {
+    register(middlewareList: Type<IMiddleware>[]) {
         _.map(middlewareList, middleware => {
             const options: Options = Reflect.getMetadata(
                 MIDDLEWARE_METADATA,

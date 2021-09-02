@@ -1,6 +1,7 @@
+import { Provider } from 'cirri/lib/container/provider.container'
+import { InjectRepository } from 'cirri/lib/container/repository.container'
 import { Repository } from 'typeorm'
-import { InjectRepository } from '../../../package/container/repository.container'
-import { Provider } from '../../../package/container/provider.container'
+
 import UserModel from '../model/user.model'
 
 export interface IDemoService {

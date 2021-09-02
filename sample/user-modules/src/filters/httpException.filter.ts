@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express'
 import {
     Exception,
     IExceptionFilter,
-} from '../../../package/common/httpException.filter'
-import LoggerService from '../../../package/common/logger.service'
+} from 'cirri/lib/common/httpException.filter'
+import LoggerService from 'cirri/lib/common/logger.service'
+import { Request, Response, NextFunction } from 'express'
 
 @Exception()
 export class MyHttpExceptionFilter implements IExceptionFilter {

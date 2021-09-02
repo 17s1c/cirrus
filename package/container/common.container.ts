@@ -13,14 +13,15 @@ import {
 } from '../common/httpException.filter'
 
 import LoggerService, { ILoggerService } from '../common/logger.service'
+import { Type } from '../token/interface/common.interface'
 
 @injectable()
 export class CommonContainer {
     constructor(private readonly container: interfaces.Container) {}
 
     register(
-        customValidationPipe: IValidationPipe,
-        customHttpExceptionFilter: IExceptionFilter,
+        customValidationPipe: Type<IValidationPipe>,
+        customHttpExceptionFilter: Type<IExceptionFilter>,
     ) {
         this.container.bind<ILoggerService>(LoggerService).toSelf()
 

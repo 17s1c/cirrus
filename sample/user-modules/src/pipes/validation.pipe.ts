@@ -1,9 +1,6 @@
+import { IValidationPipe, Validation } from 'cirri/lib/common/validation.pipe'
+import { ValidationErrorException } from 'cirri/lib/exceptions/validation.exception'
 import * as Joi from 'Joi'
-import { ValidationErrorException } from '../../../package/exceptions/validation.exception'
-import {
-    IValidationPipe,
-    Validation,
-} from '../../../package/common/validation.pipe'
 
 @Validation()
 export class MyValidationPipe implements IValidationPipe {

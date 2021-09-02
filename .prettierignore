@@ -5,5 +5,4 @@ app/node_modules/
 
 .idea/
 
-**/index.ts
 **/*.d.ts

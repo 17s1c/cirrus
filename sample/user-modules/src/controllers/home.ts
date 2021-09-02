@@ -1,5 +1,5 @@
-import { App } from '../../../package/application'
-import { IController } from '../../../package/container/controller.container'
+import { App } from 'cirri/lib/application'
+import { IController } from 'cirri/lib/container/controller.container'
 import DemoService, { IDemoService } from '../service/demo.service'
 
 export default class Home implements IController {
