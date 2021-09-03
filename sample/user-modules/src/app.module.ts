@@ -1,11 +1,11 @@
-import { AppModule } from 'cirri/lib/interfaces/config.interface'
+import { AppModule } from '../../../packages'
 import Home from './controllers/home'
 import Demo from './controllers/demo'
 import { MyHttpExceptionFilter } from './filters/httpException.filter'
 import { APICallLoggerMiddleware } from './middlewares/apiCallLogger.middleware'
 import UserModel from './model/user.model'
 import { MyValidationPipe } from './pipes/validation.pipe'
-import DemoService from './service/demo.service'
+import { DemoService } from './service/demo.service'
 
 export const appModule: AppModule = {
     controllers: [

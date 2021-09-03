@@ -1,6 +1,5 @@
-import { Provider } from 'cirri/lib/container/provider.container'
-import { InjectRepository } from 'cirri/lib/container/repository.container'
 import { Repository } from 'typeorm'
+import { InjectRepository, Provider } from '../../../../packages'
 
 import UserModel from '../model/user.model'
 
@@ -10,7 +9,7 @@ export interface IDemoService {
 }
 
 @Provider()
-export default class DemoService implements IDemoService {
+export class DemoService implements IDemoService {
     constructor(
         @InjectRepository(UserModel)
         private userRepository: Repository<UserModel>,

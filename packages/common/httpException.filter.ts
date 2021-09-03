@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import { injectable } from 'inversify'
-import { MIDDLEWARE_METADATA } from '../container/middleware.container'
-import { decorateClass } from './decorate.util'
-import LoggerService from './logger.service'
+import { decorateClass } from '../utils'
+
+import { LoggerService } from './logger.service'
 
 export interface IExceptionFilter<T = any> {
     catch(err: T, req: Request, res: Response, next: NextFunction): any

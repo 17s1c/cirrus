@@ -1,4 +1,4 @@
-import { App } from 'cirri/lib/application'
+import { App } from '../../../packages/application'
 import { appModule } from './app.module'
 import { config } from './config/local.config'
 

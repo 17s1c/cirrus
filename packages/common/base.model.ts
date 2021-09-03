@@ -9,7 +9,7 @@ import {
 import { PrimaryColumn } from 'typeorm'
 import { Generated } from 'typeorm'
 
-export default class BaseModel {
+export class BaseModel {
     @PrimaryColumn('integer')
     @Generated()
     id: number

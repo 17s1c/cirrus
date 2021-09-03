@@ -1,6 +1,6 @@
 {
     "name": "cirri",
-    "version": "0.0.4",
+    "version": "0.0.6",
     "description": "",
     "main": "index.ts",
     "scripts": {
@@ -19,6 +19,10 @@
     "keywords": [],
     "author": "zizhenli",
     "license": "ISC",
+    "files": [
+        "package.json",
+        "lib"
+    ],
     "dependencies": {
         "body-parser": "^1.19.0",
         "class-transformer": "^0.2.3",

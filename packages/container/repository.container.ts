@@ -3,8 +3,8 @@ import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as _ from 'lodash'
 import { ConnectionOptions, createConnection } from 'typeorm'
 import { Repository } from 'typeorm'
-import { decorateParam } from '../common/decorate.util'
-import { Type } from '../token/interface/common.interface'
+import { Type } from '../token'
+import { decorateParam } from '../utils'
 
 export function InjectRepository(model: Type): ParameterDecorator {
     return (target: object, name: string, index: number) => {

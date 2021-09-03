@@ -1,11 +1,7 @@
-import { App } from 'cirri/lib/application'
-import {
-    Controller,
-    IController,
-} from 'cirri/lib/container/controller.container'
 import * as Joi from 'Joi'
+import { Common, Controller, IController } from '../../../../packages'
 
-import DemoService from '../service/demo.service'
+import { DemoService } from '../service/demo.service'
 
 @Controller()
 export default class Demo implements IController {
@@ -17,7 +13,7 @@ export default class Demo implements IController {
             name: Joi.string(),
             password: Joi.number().required(),
         }
-        data = App.Common.validate(data, schema)
+        data = Common.validate(data, schema)
         await this.demoService.save(data)
         return this.demoService.findOne()
     }

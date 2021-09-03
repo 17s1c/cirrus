@@ -10,9 +10,13 @@
         "types": ["reflect-metadata", "node"],
         "sourceMap": true,
         "outDir": "./lib",
-        "baseUrl": "./package",
+        "baseUrl": "./packages",
         "incremental": true,
         "allowSyntheticDefaultImports": true
     },
+    "compileOnSave": true,
+    "include": [
+      "packages"
+    ],
     "exclude": ["node_modules", "sample"]
 }

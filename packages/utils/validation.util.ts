@@ -14,7 +14,7 @@ import {
     transform,
     isObject,
 } from 'lodash'
-import { ValidationErrorException } from '../exceptions/validation.exception'
+import { ValidationErrorException } from '../exceptions'
 
 const generateErrorMsg = (errors: ValidationError, initial = ''): any[] => {
     return map(errors, error => {

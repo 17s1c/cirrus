@@ -10,7 +10,7 @@ export interface ILoggerService {
 }
 
 @injectable()
-export default class LoggerService implements ILoggerService {
+export class LoggerService implements ILoggerService {
     private readonly logger: pino.Logger
 
     constructor(logLevel = 'info') {

@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
 import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as _ from 'lodash'
-import { decorateClass } from '../common/decorate.util'
+import { decorateClass } from '../utils'
 
 export const PROVIDER_METADATA = 'PROVIDER_METADATA'
 

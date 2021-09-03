@@ -1,10 +1,8 @@
 import { ConnectionOptions } from 'typeorm'
-import BaseModel from '../common/base.model'
-import { IExceptionFilter } from '../common/httpException.filter'
-import { IValidationPipe } from '../common/validation.pipe'
-import { IController } from '../container/controller.container'
-import { IMiddleware } from '../container/middleware.container'
-import { Type } from '../token/interface/common.interface'
+import { BaseModel, IExceptionFilter, IValidationPipe } from '../common'
+import { IController, IMiddleware } from '../container'
+
+import { Type } from './common.interface'
 
 export interface ControllerConfig {
     Api: string

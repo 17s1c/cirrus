@@ -1,4 +1,3 @@
-export const CONTROLLER_METADATA = 'controller'
 export const ROUTE_METADATA = 'method'
 export const PARAM_METADATA = 'param'
 export const PARSE_METADATA = 'parse'

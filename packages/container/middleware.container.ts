@@ -2,8 +2,8 @@ import * as express from 'express'
 import { injectable } from 'inversify'
 import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as _ from 'lodash'
-import { decorateClass } from '../common/decorate.util'
-import { Type } from '../token/interface/common.interface'
+import { Type } from '../token'
+import { decorateClass } from '../utils'
 
 export interface Options {
     global?: boolean
@@ -40,7 +40,7 @@ export const MIDDLEWARE_METADATA = 'MIDDLEWARE_METADATA'
 
 export const MIDDLEWARE = Symbol.for('MIDDLEWARE')
 
-export function Middleware(options: Options): ClassDecorator {
+export function MiddleInter(options: Options): ClassDecorator {
     return (target: object) => {
         decorateClass([injectable()], target)
         Reflect.defineMetadata(MIDDLEWARE_METADATA, options, target)

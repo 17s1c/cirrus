@@ -2,18 +2,16 @@ import { injectable } from 'inversify'
 import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as _ from 'lodash'
 import {
-    VALIDATION_PIPE,
-    ValidationPipe,
-    IValidationPipe,
-} from '../common/validation.pipe'
-import {
     EXCEPTION,
     HttpExceptionFilter,
     IExceptionFilter,
-} from '../common/httpException.filter'
-
-import LoggerService, { ILoggerService } from '../common/logger.service'
-import { Type } from '../token/interface/common.interface'
+    ILoggerService,
+    IValidationPipe,
+    LoggerService,
+    VALIDATION_PIPE,
+    ValidationPipe,
+} from '../common'
+import { Type } from '../token'
 
 @injectable()
 export class CommonContainer {

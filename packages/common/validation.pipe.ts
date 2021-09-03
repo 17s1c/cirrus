@@ -1,8 +1,7 @@
 import { injectable } from 'inversify'
 import { includes } from 'lodash'
-import { Type } from '../token/interface/common.interface'
-import { validateAndTransform } from '../utils/validation.util'
-import { decorateClass } from './decorate.util'
+import { Type } from '../token'
+import { decorateClass, validateAndTransform } from '../utils'
 
 export const VALIDATION_PIPE_METADATA = 'VALIDATION_PIPE_METADATA'
 
