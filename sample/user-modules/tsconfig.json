@@ -9,14 +9,10 @@
         "target": "es2017",
         "types": ["reflect-metadata", "node"],
         "sourceMap": true,
-        "outDir": "./lib",
-        "baseUrl": "./packages",
+        "outDir": "./dist",
+        "baseUrl": "./src",
         "incremental": true,
         "allowSyntheticDefaultImports": true
     },
-    "compileOnSave": true,
-    "include": [
-      "packages"
-    ],
-    "exclude": ["node_modules", "sample"]
+    "exclude": ["node_modules", "dist"]
 }
