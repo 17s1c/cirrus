@@ -1,5 +1,5 @@
 import * as Joi from 'Joi'
-import { Common, Controller, IController } from '../../../../packages'
+import { validate, Controller, IController } from '../../../../packages'
 
 import { DemoService } from '../service/demo.service'
 
@@ -13,7 +13,7 @@ export default class Demo implements IController {
             name: Joi.string(),
             password: Joi.number().required(),
         }
-        data = Common.validate(data, schema)
+        data = validate(data, schema)
         await this.demoService.save(data)
         return this.demoService.findOne()
     }

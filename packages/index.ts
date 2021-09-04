@@ -6,8 +6,8 @@ export * from './token'
 export * from './utils'
 export * from './common'
 
-export const Providers = App.Provider
-export const Middleware = App.Middleware
-export const Router = App.Router
-export const Repository = App.Repository
-export const Common = App.Common
+export const validate = <T>(value: any, metaType: any): T =>
+    App.Common.validate<T>(value, metaType)
+
+export const getProvider = <T>(provider): T =>
+    App.Provider.getProvider<T>(provider)
