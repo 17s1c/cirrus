@@ -7,7 +7,7 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "target": "es2017",
-        "types": ["reflect-metadata", "node"],
+        "types": ["reflect-metadata", "node", "jest"],
         "sourceMap": true,
         "outDir": "./lib",
         "baseUrl": "./packages",
@@ -15,8 +15,6 @@
         "allowSyntheticDefaultImports": true
     },
     "compileOnSave": true,
-    "include": [
-      "packages"
-    ],
+    "include": ["packages"],
     "exclude": ["node_modules", "sample"]
 }
