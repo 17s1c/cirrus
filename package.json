@@ -31,8 +31,8 @@
     ],
     "dependencies": {
         "body-parser": "^1.19.0",
-        "class-transformer": "^0.2.3",
-        "class-validator": "^0.11.0",
+        "class-transformer": "^0.4.0",
+        "class-validator": "^0.13.1",
         "esprima": "^4.0.1",
         "express": "^4.17.1",
         "http-errors": "^1.8.0",

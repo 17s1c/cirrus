@@ -1,5 +1,6 @@
 import { App } from '../../../packages/application'
 import { config } from './config/local.config'
+import Demo from './controllers/demo'
 import Home from './controllers/home'
 import { MyHttpExceptionFilter } from './filters/httpException.filter'
 import { APICallLoggerMiddleware } from './middlewares/apiCallLogger.middleware'
@@ -12,6 +13,10 @@ App.init(
             {
                 Api: '/home',
                 Controller: Home,
+            },
+            {
+                Api: '/demo',
+                Controller: Demo,
             },
         ],
         validationPipe: null,

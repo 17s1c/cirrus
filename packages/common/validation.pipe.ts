@@ -18,6 +18,7 @@ export function Validation(options?: any): ClassDecorator {
     }
 }
 
+@injectable()
 export class ValidationPipe implements IValidationPipe {
     transform(value: any, metaType: any): Record<string, unknown> | any[] {
         if (!metaType || !ValidationPipe.toValidate(metaType)) {
