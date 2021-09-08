@@ -102,6 +102,7 @@ export class App {
         app.use((err, req, res, next) =>
             httpExceptionFilter.catch(err, req, res, next),
         )
+        App.Application.listen()
         return App.Application
     }
 }

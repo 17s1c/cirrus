@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm'
-import { InjectRepository, Provider } from '../../../../packages'
+import { InjectModel, Provider } from '../../../../packages'
 
 import UserModel from '../model/user.model'
 
@@ -11,7 +11,7 @@ export interface IDemoService {
 @Provider()
 export class DemoService implements IDemoService {
     constructor(
-        @InjectRepository(UserModel)
+        @InjectModel(UserModel)
         private userRepository: Repository<UserModel>,
     ) {}
 

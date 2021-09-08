@@ -6,7 +6,7 @@ import { Repository } from 'typeorm'
 import { Type } from '../token'
 import { decorateParam } from '../utils'
 
-export function InjectRepository(model: Type): ParameterDecorator {
+export function InjectModel(model: Type): ParameterDecorator {
     return (target: object, name: string, index: number) => {
         decorateParam(
             [inject(new LazyServiceIdentifer(() => model?.name))],

@@ -1,26 +1,24 @@
-import { AppModule } from '../../../packages'
+import { App } from '../../../packages/application'
+import { config } from './config/local.config'
 import Home from './controllers/home'
-import Demo from './controllers/demo'
 import { MyHttpExceptionFilter } from './filters/httpException.filter'
 import { APICallLoggerMiddleware } from './middlewares/apiCallLogger.middleware'
 import UserModel from './model/user.model'
-import { MyValidationPipe } from './pipes/validation.pipe'
 import { DemoService } from './service/demo.service'
 
-export const appModule: AppModule = {
-    controllers: [
-        {
-            Api: '/home',
-            Controller: Home,
-        },
-        {
-            Api: '/demo',
-            Controller: Demo,
-        },
-    ],
-    validationPipe: MyValidationPipe,
-    httpExceptionFilter: MyHttpExceptionFilter,
-    middleware: [APICallLoggerMiddleware],
-    providers: [DemoService],
-    model: [UserModel],
-}
+App.init(
+    {
+        controllers: [
+            {
+                Api: '/home',
+                Controller: Home,
+            },
+        ],
+        validationPipe: null,
+        httpExceptionFilter: MyHttpExceptionFilter,
+        middleware: [APICallLoggerMiddleware],
+        providers: [DemoService],
+        model: [UserModel],
+    },
+    config,
+).catch(err => console.error(err))
