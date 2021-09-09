@@ -13,6 +13,11 @@ import {
     RepositoryContainer,
 } from './container'
 import { AppConfig, AppModule } from './token'
+import * as dotenv from 'dotenv'
+const result = dotenv.config()
+if (result.error) {
+    throw result.error
+}
 
 export class App {
     static Application: App

@@ -1,5 +1,5 @@
 import { App } from '../../../packages/application'
-import { config } from './config/local.config'
+import { config } from './config/config'
 import Demo from './controllers/demo'
 import Home from './controllers/home'
 import { MyHttpExceptionFilter } from './filters/httpException.filter'
