@@ -4,13 +4,8 @@ import { IController, IMiddleware } from '../container'
 
 import { Type } from './common.interface'
 
-export interface ControllerConfig {
-    Api: string
-    Controller: Type<IController>
-}
-
 export interface AppModule {
-    controllers: ControllerConfig[]
+    controllers: Type<IController>[]
     validationPipe: Type<IValidationPipe>
     httpExceptionFilter: Type<IExceptionFilter>
     middleware: Type<IMiddleware>[]
