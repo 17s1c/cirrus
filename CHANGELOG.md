@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.12-beta.1](https://github.com/17s1c/cirrus/compare/v0.0.12-beta.0...v0.0.12-beta.1) (2021-09-14)
+
+
+### Features
+
+* update ([7934ae6](https://github.com/17s1c/cirrus/commit/7934ae610270eb3612423cdeeb7e2abfc396aed8))
+
 ### [0.0.12-beta.0](https://github.com/17s1c/cirrus/compare/v0.0.11...v0.0.12-beta.0) (2021-09-13)
 
 
