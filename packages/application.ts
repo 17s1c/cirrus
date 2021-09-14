@@ -64,10 +64,11 @@ export class App {
     }
 
     private _common(): CommonContainer {
-        const commonContainer = new CommonContainer(this.appContainer)
+        const commonContainer = new CommonContainer(this.appContainer, this.app)
         commonContainer.register(
             this.appModule.validationPipe,
             this.appModule.httpExceptionFilter,
+            this.appModule.enableCors,
         )
         return commonContainer
     }

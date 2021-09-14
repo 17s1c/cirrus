@@ -14,6 +14,7 @@ App.init(
         httpExceptionFilter: MyHttpExceptionFilter,
         middleware: [APICallLoggerMiddleware],
         providers: [DemoService],
+        enableCors: true,
         model: [UserModel],
     },
     config,

@@ -1,3 +1,4 @@
+import { CorsOptions } from 'cors'
 import { ConnectionOptions } from 'typeorm'
 import { BaseModel, IExceptionFilter, IValidationPipe } from '../common'
 import { IController, IMiddleware } from '../container'
@@ -9,6 +10,7 @@ export interface AppModule {
     validationPipe: Type<IValidationPipe>
     httpExceptionFilter: Type<IExceptionFilter>
     middleware: Type<IMiddleware>[]
+    enableCors?: boolean | CorsOptions
     providers: Type[]
     model: Type<BaseModel>[]
 }
