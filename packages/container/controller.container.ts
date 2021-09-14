@@ -10,14 +10,8 @@ import { Options } from './middleware.container'
 import { REQUEST, RequestContainer, IRequest } from './request.container'
 import { RESPONSE, ResponseContainer, IResponse } from './response.container'
 
-export interface ContextInterface {
-    readonly requestID: string
-    readonly request: IRequest
-    readonly response: IResponse
-}
-
 export interface IController {
-    index(context: ContextInterface): any
+    index(context: any): any
 }
 
 export const CONTROLLER_METADATA = 'CONTROLLER_METADATA'
