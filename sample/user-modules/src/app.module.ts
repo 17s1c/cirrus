@@ -9,20 +9,12 @@ import { DemoService } from './service/demo.service'
 
 App.init(
     {
-        controllers: [
-            {
-                Api: '/home',
-                Controller: Home,
-            },
-            {
-                Api: '/demo',
-                Controller: Demo,
-            },
-        ],
+        controllers: [Home, Demo],
         validationPipe: null,
         httpExceptionFilter: MyHttpExceptionFilter,
         middleware: [APICallLoggerMiddleware],
         providers: [DemoService],
+        enableCors: true,
         model: [UserModel],
     },
     config,

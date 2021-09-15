@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.12-beta.2](https://github.com/17s1c/cirrus/compare/v0.0.12-beta.1...v0.0.12-beta.2) (2021-09-14)
+
+
+### Features
+
+* enable cors ([1622dc2](https://github.com/17s1c/cirrus/commit/1622dc23630a6cf854092f3421b4e49d9e6b2a12))
+
+### [0.0.12-beta.1](https://github.com/17s1c/cirrus/compare/v0.0.12-beta.0...v0.0.12-beta.1) (2021-09-14)
+
+
+### Features
+
+* update ([7934ae6](https://github.com/17s1c/cirrus/commit/7934ae610270eb3612423cdeeb7e2abfc396aed8))
+
+### [0.0.12-beta.0](https://github.com/17s1c/cirrus/compare/v0.0.11...v0.0.12-beta.0) (2021-09-13)
+
+
+### Features
+
+* publish version 0.0.12 ([c094573](https://github.com/17s1c/cirrus/commit/c094573c7fbbee199e32251fb168c1fd3e920f43))
+
 ### [0.0.11](https://github.com/17s1c/cirrus/compare/v0.0.10...v0.0.11) (2021-09-09)
 
 ### [0.0.10](https://github.com/17s1c/cirrus/compare/v0.0.9...v0.0.10) (2021-09-08)

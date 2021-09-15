@@ -3,11 +3,12 @@ import { injectable } from 'inversify'
 import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as _ from 'lodash'
 import { Type } from '../token'
-import { decorateClass } from '../utils'
+import { decorateClass, generateRouterPath } from '../utils'
+import { IController } from './controller.container'
 
 export interface Options {
     global?: boolean
-    api?: string[]
+    controllers?: Type<IController>[]
 }
 
 export interface Value {
@@ -77,13 +78,14 @@ export class MiddlewareContainer {
                 this.app.use((req, res, next) =>
                     globalMiddleware.use(req, res, next),
                 )
-            } else if (options && !_.isEmpty(options.api)) {
+            } else if (options && !_.isEmpty(options.controllers)) {
                 const _middleware = this.container.get<IMiddleware>(
                     middleware as any,
                 )
-                _.map(options.api, api =>
-                    this.app.use(api, (req, res, next) =>
-                        _middleware.use(req, res, next),
+                _.map(options.controllers, controller =>
+                    this.app.use(
+                        generateRouterPath(controller),
+                        (req, res, next) => _middleware.use(req, res, next),
                     ),
                 )
             }

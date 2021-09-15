@@ -1,3 +1,5 @@
+import * as cors from 'cors'
+import * as express from 'express'
 import { injectable } from 'inversify'
 import { interfaces } from 'inversify/lib/interfaces/interfaces'
 import * as _ from 'lodash'
@@ -15,12 +17,21 @@ import { Type } from '../token'
 
 @injectable()
 export class CommonContainer {
-    constructor(private readonly container: interfaces.Container) {}
+    constructor(
+        private readonly container: interfaces.Container,
+        private readonly app: express.Express,
+    ) {}
 
     register(
         customValidationPipe: Type<IValidationPipe>,
         customHttpExceptionFilter: Type<IExceptionFilter>,
+        enableCors?: boolean | cors.CorsOptions,
     ) {
+        if (_.isBoolean(enableCors) && enableCors) {
+            this.app.use(cors())
+        } else if (_.isObject(enableCors)) {
+            this.app.use(cors(enableCors))
+        }
         this.container.bind<ILoggerService>(LoggerService).toSelf()
 
         const validationMiddleware = _.isFunction(customValidationPipe)
