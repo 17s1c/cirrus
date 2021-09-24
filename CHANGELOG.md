@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.14](https://github.com/17s1c/cirrus/compare/v0.0.13...v0.0.14) (2021-09-24)
+
+
+### Bug Fixes
+
+* dotenv config ([979189b](https://github.com/17s1c/cirrus/commit/979189be60a19a877627dc79f07d799eefb568d3))
+
 ### [0.0.13](https://github.com/17s1c/cirrus/compare/v0.0.12...v0.0.13) (2021-09-24)
 
 
