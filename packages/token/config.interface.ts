@@ -7,12 +7,12 @@ import { Type } from './common.interface'
 
 export interface AppModule {
     controllers: Type<IController>[]
-    validationPipe: Type<IValidationPipe>
-    httpExceptionFilter: Type<IExceptionFilter>
-    middleware: Type<IMiddleware>[]
+    validationPipe?: Type<IValidationPipe>
+    httpExceptionFilter?: Type<IExceptionFilter>
+    middleware?: Type<IMiddleware>[]
     enableCors?: boolean | CorsOptions
-    providers: Type[]
-    model: Type<BaseModel>[]
+    providers?: Type[]
+    model?: Type<BaseModel>[]
 }
 
 export interface AppConfig {

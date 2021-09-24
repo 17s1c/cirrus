@@ -25,6 +25,7 @@ export class RepositoryContainer {
     ) {}
 
     async register(models: any[]) {
+        if (_.isEmpty(models)) return
         const connection = await createConnection(this.dbOptions)
         _.each(models, model => {
             const modelRepository = connection.getRepository(model)
