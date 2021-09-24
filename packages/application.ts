@@ -14,10 +14,7 @@ import {
 } from './container'
 import { AppConfig, AppModule } from './token'
 import * as dotenv from 'dotenv'
-const result = dotenv.config()
-if (result.error) {
-    throw result.error
-}
+dotenv.config()
 
 export class App {
     static Application: App
