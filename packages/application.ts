@@ -12,6 +12,7 @@ import {
     ProviderContainer,
     RepositoryContainer,
 } from './container'
+import { NotFoundErrorException } from './exceptions/notFound.exception'
 import { AppConfig, AppModule } from './token'
 import * as dotenv from 'dotenv'
 dotenv.config()
@@ -102,6 +103,9 @@ export class App {
         const httpExceptionFilter = App.Application.container.get<
             IExceptionFilter
         >(EXCEPTION)
+        app.use((req, res, next) =>
+            next(new NotFoundErrorException('api not found')),
+        )
         app.use((err, req, res, next) =>
             httpExceptionFilter.catch(err, req, res, next),
         )

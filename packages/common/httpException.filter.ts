@@ -28,7 +28,7 @@ export class HttpExceptionFilter implements IExceptionFilter {
         res.status(err?.status || 500)
         res.send({
             code: err?.code,
-            error: err?.message,
+            error: err?.message || 'Internal server error',
         })
     }
 }
