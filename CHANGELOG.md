@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.15](https://github.com/17s1c/cirrus/compare/v0.0.14...v0.0.15) (2021-09-27)
+
+
+### Features
+
+* NotFoundError Exception ([65d6f7d](https://github.com/17s1c/cirrus/commit/65d6f7d8af3b2b72db87a4574dec9e7f85736e6b))
+
 ### [0.0.14](https://github.com/17s1c/cirrus/compare/v0.0.13...v0.0.14) (2021-09-24)
 
 
